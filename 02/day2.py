@@ -42,5 +42,3 @@ def determine_real_position(steps):
 
 # solution part 2:
 print(determine_real_position(data))
-# 1868935
-# 1965970888
