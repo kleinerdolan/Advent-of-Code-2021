@@ -1,7 +1,7 @@
-from util.fileReader import readNumbers
+from util.fileReader import read_numbers
 
-formatted_input = readNumbers(open("input"))
-sample = readNumbers(open("sample"))
+formatted_input = read_numbers(open("input"))
+sample = read_numbers(open("sample"))
 
 
 # part 1
