@@ -1,5 +1,3 @@
-from re import match
-
 from util.fileReader import read_strings
 
 sample = read_strings(open("sample"))
