@@ -1,3 +1,5 @@
+from re import match
+
 from util.fileReader import read_strings
 
 sample = read_strings(open("sample"))
@@ -6,15 +8,16 @@ data = read_strings(open("input"))
 
 # part 1
 def determine_position(steps):
-    forward = 0
-    depth = 0
+    forward = depth = 0
     for step in steps:
-        if step.startswith("forward"):
-            forward += int(step.split(" ")[1])
-        elif step.startswith("up"):
-            depth -= int(step.split(" ")[1])
-        elif step.startswith("down"):
-            depth += int(step.split(" ")[1])
+        command, value = step.split()
+        value = int(value)
+        if command == "forward":
+            forward += value
+        elif command == "up":
+            depth -= value
+        elif command == "down":
+            depth += value
     return forward * depth
 
 
@@ -24,18 +27,16 @@ print(determine_position(data))
 
 # part 2
 def determine_real_position(steps):
-    aim = 0
-    forward = 0
-    depth = 0
+    aim = forward = depth = 0
     for step in steps:
-        units = int(step.split(" ")[1])
-        if step.startswith("forward"):
-            forward += units
-            depth += aim * units
-        elif step.startswith("up"):
-            aim -= units
-        elif step.startswith("down"):
-            aim += units
+        match step.split():
+            case "forward", value:
+                forward += int(value)
+                depth += aim * int(value)
+            case "up", value:
+                aim -= int(value)
+            case "down", value:
+                aim += int(value)
     return forward * depth
 
 
