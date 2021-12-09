@@ -40,27 +40,21 @@ def find_eight(encrypted_digits):
 
 # three has length 5 is a seven + two more entries
 def find_three(encrypted_digits, seven):
+    seven_set = set([char for char in seven])
     for digit in encrypted_digits:
         if len(digit) == 5:
-            is_three = True
-            for letter in seven:
-                if letter not in digit:
-                    is_three = False
-                    break
-            if is_three:
+            digit_set = set([char for char in digit])
+            if seven_set.issubset(digit_set):
                 return digit
 
 
 # nine is length 6 and contains 4
-def find_nine(encrypted_digits, four):
+def find_nine(encrypted_digits, three):
+    three_set = set([char for char in three])
     for digit in encrypted_digits:
         if len(digit) == 6:
-            is_nine = True
-            for letter in four:
-                if letter not in digit:
-                    is_nine = False
-                    break
-            if is_nine:
+            digit_set = set([char for char in digit])
+            if three_set.issubset(digit_set):
                 return digit
 
 
@@ -76,15 +70,13 @@ def find_six(encrypted_digits, one):
                 return digit
 
 
-# zero has 6 letters and it does contain all letters from 3 except for one
-def find_zero(encrypted_digits, three):
+# zero has 6 letters and it does contain all letters from 7
+def find_zero(encrypted_digits, seven):
+    seven_set = set([char for char in seven])
     for digit in encrypted_digits:
         if len(digit) == 6:
-            not_in_digit = 0
-            for letter in three:
-                if letter not in digit:
-                    not_in_digit += 1
-            if not_in_digit == 1:
+            digit_set = set([char for char in digit])
+            if seven_set.issubset(digit_set):
                 return digit
 
 
@@ -136,27 +128,26 @@ def decrypt_row(encrypted):
     input_copy.remove(eight)
     three = find_three(input_copy, seven)
     input_copy.remove(three)
-    nine = find_nine(input_copy, four)
+    nine = find_nine(input_copy, three)
     input_copy.remove(nine)
     six = find_six(input_copy, one)
     input_copy.remove(six)
-    zero = find_zero(input_copy, three)
+    zero = find_zero(input_copy, seven)
     input_copy.remove(zero)
     five = find_five(input_copy, six)
     input_copy.remove(five)
     two = input_copy[0]
-    config = determine_config([set(zero), set(one), set(two), set(three), set(four), set(five), set(six), set(seven), set(eight), set(nine)])
-    visualize_config(config)
+    # config = determine_config([set(zero), set(one), set(two), set(three), set(four), set(five), set(six), set(seven), set(eight), set(nine)])
+    # visualize_config(config)
     return [set(zero), set(one), set(two), set(three), set(four), set(five), set(six), set(seven), set(eight), set(nine)]
     # return config
 
 
 def decrypt_value(second_part, key):
     value_string = ""
-    print(key)
+    # print(key)
 
     for entry in second_part:
-        print("entry:",entry)
         entry_set = set(entry)
         if entry_set == key[0]:
             value_string += "0"
@@ -178,20 +169,17 @@ def decrypt_value(second_part, key):
             value_string += "8"
         elif entry_set == key[9]:
             value_string += "9"
-    print(int(value_string))
     return int(value_string, 10)
 
 
 def decrypt_all(first_part, second_part):
     sum = 0
     for index in range(len(first_part)):
-        print("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
-        print(first_part[index]," | ",second_part[index])
+        # print("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------")
+        # print(first_part[index]," | ",second_part[index])
         key = decrypt_row(first_part[index])
         value = decrypt_value(second_part[index], key)
         sum += value
-    print(len(first_part))
-    print(len(second_part))
     return sum
 
 
