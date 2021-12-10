@@ -1,6 +1,6 @@
 import copy
 
-from util.fileReader import read_strings, read_matrix, print_2d_list
+from util.fileReader import read_strings, read_matrix
 
 sample_string = read_strings(open("sample"))
 data_string = read_strings(open("input"))
@@ -63,44 +63,35 @@ def calculate_risk(lows):
 def mark_basin(orig_map, x, y):
     cur_map = copy.copy(orig_map)
     marked_fields = 0
-    # print("checking [" + str(x) + "][" + str(y) + "]")
     # check top
     for y_dif in range(1, y + 1):
-        # print("top [" + str(x) + "][" + str(y - y_dif) + "]")
         if 0 < cur_map[y - y_dif][x] < 9:
             cur_map[y - y_dif][x] = 0
             marked_fields += 1
-            # print("recursion top")
             marked_fields += mark_basin(cur_map, x, y - y_dif)
         else:
             break
     # check left
     for x_dif in range(1, x + 1):
-        # print("left [" + str(x - x_dif) + "][" + str(y) + "]")
         if 0 < cur_map[y][x - x_dif] < 9:
             cur_map[y][x - x_dif] = 0
             marked_fields += 1
-            # print("recursion left")
             marked_fields += mark_basin(cur_map, x - x_dif, y)
         else:
             break
     # check bottom
     for y_dif in range(1, len(cur_map) - y):
-        # print("bottom [" + str(x) + "][" + str(y + y_dif) + "]")
         if 0 < cur_map[y + y_dif][x] < 9:
             cur_map[y + y_dif][x] = 0
             marked_fields += 1
-            # print("recursion bottom")
             marked_fields += mark_basin(cur_map, x, y + y_dif)
         else:
             break
     # check right
     for x_dif in range(1, len(cur_map[0]) - x):
-        # print("right [" + str(x + x_dif) + "][" + str(y) + "]")
         if 0 < cur_map[y][x + x_dif] < 9:
             cur_map[y][x + x_dif] = 0
             marked_fields += 1
-            # print("recursion right")
             marked_fields += mark_basin(cur_map, x + x_dif, y)
         else:
             break
